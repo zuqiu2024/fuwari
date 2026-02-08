@@ -4,7 +4,8 @@ import Navbar from "/src/components/Navbar.astro";
 import BackToTop from "/src/components/control/BackToTop.astro";
 import SideBar from "/src/components/widget/SideBar.astro";
 import { paths } from "/src/utils/url-utils";
-import Layout from "./Layout.astro";
+// 改成 /src/ 开头
+import Layout from "/src/layouts/Layout.astro"; 
 
 interface Props {
   title?: string;
@@ -15,18 +16,5 @@ interface Props {
 
 const { title, description, lang, hasBanner } = Astro.props;
 ---
-
 <Layout title={title} description={description} lang={lang}>
-<div class="max-w-[var(--page-width)] min-h-screen grid grid-cols-1 md:grid-cols-[var(--left-width)_minmax(0,1fr)] gap-4 mx-auto p-4">
-    <SideBar class="hidden md:block" />
-    <main id="swup" class="transition-fade">
-        <div id="content-wrapper" class="space-y-4">
-            <slot />
-            <Footer />
-        </div>
-    </main>
-    <div class="fixed bottom-6 right-6 z-50">
-        <BackToTop />
-    </div>
-</div>
-</Layout>
+...
