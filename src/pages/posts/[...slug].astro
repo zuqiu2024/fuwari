@@ -2,9 +2,9 @@
 export const prerender = true;
 
 import path from "node:path";
-import { getSortedPosts } from "../../utils/content-utils";
-import PostLayout from "../../layouts/PostLayout.astro";
-import { formatDateToYYYYMMDD } from "../../utils/date-utils";
+import { getSortedPosts } from "@utils/content-utils";
+import PostLayout from "@layouts/PostLayout.astro";
+import { formatDateToYYYYMMDD } from "@utils/date-utils";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -17,7 +17,6 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await entry.render();
 
-// 处理最后更新时间
 const lastModified = remarkPluginFrontmatter.lastModified 
     ? new Date(remarkPluginFrontmatter.lastModified) 
     : entry.data.published;
