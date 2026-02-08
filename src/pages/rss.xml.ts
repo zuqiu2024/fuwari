@@ -1,3 +1,4 @@
+export const prerender = true;
 import rss from "@astrojs/rss";
 import { getSortedPosts } from "@utils/content-utils";
 import { url } from "@utils/url-utils";
@@ -10,7 +11,6 @@ const parser = new MarkdownIt();
 
 function stripInvalidXmlChars(str: string): string {
 	return str.replace(
-		// biome-ignore lint/suspicious/noControlCharactersInRegex: https://www.w3.org/TR/xml/#charsets
 		/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]/g,
 		"",
 	);
