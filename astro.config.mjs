@@ -17,14 +17,14 @@ import remarkSectionize from "remark-sectionize";
 import { admsConfig } from "./src/plugins/rehype-adms-config.mjs";
 import { parseComments } from "./src/plugins/remark-parse-comments.mjs";
 
-// https://astro.build/config
 export default defineConfig({
-  // 重要：把这个改成你的实际域名
   site: "https://zhanxx81201.dpdns.org", 
-  base: "/", // 如果你不是部署在子目录，保持为 "/"
+  base: "/",
   trailingSlash: "always",
   integrations: [
-    tailwind(),
+    tailwind({
+      nesting: true,
+    }),
     swup({
       theme: "fade",
       animationSelector: '[class*="transition-fade"]',
@@ -68,7 +68,12 @@ export default defineConfig({
       cssMinify: "lightningcss",
     },
     ssr: {
-      noExternal: ["overlayscrollbars", "shiki"],
+      noExternal: ["overlayscrollbars", "shiki", "@swup/astro"],
+    },
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
     },
   },
 });
