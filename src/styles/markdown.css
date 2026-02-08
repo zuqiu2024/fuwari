@@ -20,7 +20,8 @@
     }
 
     a:not(.no-styling) {
-        @apply relative bg-none link font-medium text-[var(--primary)]
+        /* 已修复：移除了导致报错的 link 类，改用显式 transition 确保效果一致 */
+        @apply relative bg-none font-medium text-[var(--primary)] transition
         underline decoration-[var(--link-underline)] decoration-1 decoration-dashed underline-offset-4;
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
