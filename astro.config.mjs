@@ -4,23 +4,16 @@ import tailwind from '@astrojs/tailwind'
 import swup from '@swup/astro'
 import { defineConfig } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
-import cloudflare from '@astrojs/cloudflare'
 import keystatic from '@keystatic/astro'
-import icon from 'astro-icon' // 补齐这个
+import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://zhanxx81201.dpdns.org',
   base: '/',
   trailingSlash: 'always',
-  output: 'server', 
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-    // 添加 kv 绑定支持
-    runtime: { mode: 'complete', binding: 'SESSION' }
-  }),
+  // 1. 修改为 static，这是博客最稳妥的模式
+  output: 'static', 
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -29,18 +22,25 @@ export default defineConfig({
     sitemap(),
     swup(),
     expressiveCode(),
-    icon(), // 必须加上这个，解决 virtual:astro-icon 报错
+    icon(),
     keystatic(),
   ],
+  // 2. 优化图片构建，解决日志里提到的 sharp 警告
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    }
+  },
+  markdown: {
+    shikiConfig: {
+      theme: 'one-dark-pro',
+    },
+  },
   vite: {
     build: {
       rollupOptions: {
-        // 确保这些 Node 模块在 Cloudflare 环境不报错
-        external: ['node:path', 'node:async_hooks', 'stream', 'util'],
+        external: ['node:path', 'node:async_hooks'],
       },
     },
-    ssr: {
-        external: ['node:path', 'node:async_hooks', 'stream', 'util']
-    }
   },
 })
