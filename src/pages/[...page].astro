@@ -1,4 +1,7 @@
 ---
+// 1. 显式添加这一行，强制声明此页面为静态预渲染
+export const prerender = true;
+
 import type { GetStaticPaths } from "astro";
 import Pagination from "../components/control/Pagination.astro";
 import PostPage from "../components/PostPage.astro";
@@ -10,10 +13,8 @@ export const getStaticPaths = (async ({ paginate }) => {
 	const allBlogPosts = await getSortedPosts();
 	return paginate(allBlogPosts, { pageSize: PAGE_SIZE });
 }) satisfies GetStaticPaths;
-// https://github.com/withastro/astro/issues/6507#issuecomment-1489916992
 
 const { page } = Astro.props;
-
 const len = page.data.length;
 ---
 
