@@ -1,9 +1,9 @@
 ---
-// 加上这一行
 export const prerender = true;
 
 import path from "node:path";
-// ... (后面保持你的所有 import 不变)
+import { getSortedPosts } from "../../utils/content-utils";
+import PostLayout from "../../layouts/PostLayout.astro";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
 
 export async function getStaticPaths() {
@@ -13,5 +13,28 @@ export async function getStaticPaths() {
 		props: { entry },
 	}));
 }
-// ... (后面保持你原有的逻辑和 HTML 代码不变)
+
+const { entry } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await entry.render();
+
+// 处理最后更新时间
+const lastModified = remarkPluginFrontmatter.lastModified 
+    ? new Date(remarkPluginFrontmatter.lastModified) 
+    : entry.data.published;
 ---
+
+<PostLayout
+	title={entry.data.title}
+	published={entry.data.published}
+    lastModified={lastModified}
+	description={entry.data.description}
+	image={entry.data.image}
+	tags={entry.data.tags}
+	category={entry.data.category}
+    prevSlug={entry.data.prevSlug}
+    prevTitle={entry.data.prevTitle}
+    nextSlug={entry.data.nextSlug}
+    nextTitle={entry.data.nextTitle}
+>
+	<Content />
+</PostLayout>
