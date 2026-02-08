@@ -14,11 +14,13 @@ import remarkDirectiveRehype from "remark-directive-rehype";
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
+
+// 使用这种导入方式绕过构建环境的路径解析问题
 import { admsConfig } from "./src/plugins/rehype-adms-config.mjs";
 import { parseComments } from "./src/plugins/remark-parse-comments.mjs";
 
 export default defineConfig({
-  site: "https://zhanxx81201.dpdns.org", 
+  site: "https://zhanxx81201.dpdns.org",
   base: "/",
   trailingSlash: "always",
   integrations: [
@@ -68,12 +70,7 @@ export default defineConfig({
       cssMinify: "lightningcss",
     },
     ssr: {
-      noExternal: ["overlayscrollbars", "shiki", "@swup/astro"],
-    },
-    resolve: {
-      alias: {
-        "@": "/src",
-      },
+      noExternal: ["overlayscrollbars", "shiki", "@swup/astro", "flexsearch"],
     },
   },
 });
