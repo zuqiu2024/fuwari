@@ -1,11 +1,8 @@
 ---
 export const prerender = true;
 
-import path from "node:path";
-// 直接定位到具体文件，不使用别名
-import { getSortedPosts } from "../../utils/content-utils.ts";
-import PostLayout from "../../layouts/PostLayout.astro";
-import { formatDateToYYYYMMDD } from "../../utils/date-utils.ts";
+import { getSortedPosts } from "../../utils/content-utils";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -16,25 +13,11 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await entry.render();
-
-const lastModified = remarkPluginFrontmatter.lastModified 
-    ? new Date(remarkPluginFrontmatter.lastModified) 
-    : entry.data.published;
+const { Content } = await entry.render();
 ---
 
-<PostLayout
-	title={entry.data.title}
-	published={entry.data.published}
-    lastModified={lastModified}
-	description={entry.data.description}
-	image={entry.data.image}
-	tags={entry.data.tags}
-	category={entry.data.category}
-    prevSlug={entry.data.prevSlug}
-    prevTitle={entry.data.prevTitle}
-    nextSlug={entry.data.nextSlug}
-    nextTitle={entry.data.nextTitle}
->
-	<Content />
-</PostLayout>
+<MainGridLayout title={entry.data.title} description={entry.data.description}>
+    <article class="prose prose-neutral grow max-w-none">
+        <Content />
+    </article>
+</MainGridLayout>
