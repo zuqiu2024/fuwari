@@ -1,8 +1,8 @@
 ---
 export const prerender = true;
 
-import { getSortedPosts } from "../../utils/content-utils";
-import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "/src/utils/content-utils";
+import MainGridLayout from "/src/layouts/MainGridLayout.astro";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -17,7 +17,7 @@ const { Content } = await entry.render();
 ---
 
 <MainGridLayout title={entry.data.title} description={entry.data.description}>
-    <article class="prose prose-neutral grow max-w-none">
-        <Content />
-    </article>
+	<div class="card-base p-6 md:p-9">
+		<Content />
+	</div>
 </MainGridLayout>
